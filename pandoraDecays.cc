@@ -2,6 +2,19 @@
 #include <stdlib.h>
 using namespace Pythia8;
 
+bool daughterCheck(vector<int> & tDaughters, Pythia & pythia, double maxEta, double minPt) {
+  bool accept = true;
+  int nDecays = tDaughters.size();
+  for(int iDecay = 0; iDecay < nDecays; iDecay++) {
+    Particle pDecay = pythia.event[tDaughters[iDecay]];
+    if(pDecay.isFinal() && abs(pDecay.id()) != 12 && abs(pDecay.id()) != 14 && abs(pDecay.id()) != 16) { //only get the final daughters, and print some info
+      accept = accept && abs(pDecay.eta()) < maxEta && pDecay.pT() > minPt;
+    }
+    if(!accept) return accept;
+  }
+  return accept;
+}
+
 int main() {
 
   //Initialize Pythia settings, in Pythia object pythia
@@ -28,7 +41,7 @@ int main() {
   int iPrintLHA  = 0;
 
   //Detector cuts
-  double maxEta = 2.4;
+  double maxEta = 1.7;
   double minPt = 0.0;
 
   //for measuring acceptance
@@ -95,26 +108,12 @@ int main() {
         TauPtTrailing.fill(t1.pT());
       }
 
-      bool accept = true;      
       vector<int> tDaughters1 = pythia.event[5].daughterListRecursive();
-      int nDecays1 = tDaughters1.size();
-      for(int iDecay = 0; iDecay < nDecays1; iDecay++) {
-        Particle pDecay = pythia.event[tDaughters1[iDecay]];
-        if(pDecay.isFinal() && abs(pDecay.id()) != 12 && abs(pDecay.id()) != 14 && abs(pDecay.id()) != 16) { //only get the final daughters, and print some info
-          accept = accept && abs(pDecay.eta()) < maxEta && pDecay.pT() > minPt;
-        }
-        if(!accept) break;
-      }
+      bool accept = daughterCheck(tDaughters1, pythia, maxEta, minPt);
 
       vector<int> tDaughters2 = pythia.event[6].daughterListRecursive();
-      int nDecays2 = tDaughters2.size();
-      for(int iDecay = 0; iDecay < nDecays2; iDecay++) {
-        Particle pDecay = pythia.event[tDaughters2[iDecay]];
-        if(pDecay.isFinal() && abs(pDecay.id()) != 12 && abs(pDecay.id()) != 14 && abs(pDecay.id()) != 16) { //only get the final daughters, and print some info
-          accept = accept && abs(pDecay.eta()) < maxEta && pDecay.pT() > minPt;
-        }
-        if(!accept) break;
-      }
+      accept = accept && daughterCheck(tDaughters2, pythia, maxEta, minPt);
+
 
       if(accept) acceptedEvents++;
       events++;
