@@ -100,7 +100,7 @@ int main() {
       int nDecays1 = tDaughters1.size();
       for(int iDecay = 0; iDecay < nDecays1; iDecay++) {
         Particle pDecay = pythia.event[tDaughters1[iDecay]];
-        if(pDecay.isFinal() && abs(pDecay.id()) != 12 || abs(pDecay.id()) != 14 && abs(pDecay.id()) != 16) { //only get the final daughters, and print some info
+        if(pDecay.isFinal() && abs(pDecay.id()) != 12 && abs(pDecay.id()) != 14 && abs(pDecay.id()) != 16) { //only get the final daughters, and print some info
           accept = accept && abs(pDecay.eta()) < maxEta && pDecay.pT() > minPt;
         }
         if(!accept) break;
@@ -110,7 +110,7 @@ int main() {
       int nDecays2 = tDaughters2.size();
       for(int iDecay = 0; iDecay < nDecays2; iDecay++) {
         Particle pDecay = pythia.event[tDaughters2[iDecay]];
-        if(pDecay.isFinal() && abs(pDecay.id()) != 12 || abs(pDecay.id()) != 14 && abs(pDecay.id()) != 16) { //only get the final daughters, and print some info
+        if(pDecay.isFinal() && abs(pDecay.id()) != 12 && abs(pDecay.id()) != 14 && abs(pDecay.id()) != 16) { //only get the final daughters, and print some info
           accept = accept && abs(pDecay.eta()) < maxEta && pDecay.pT() > minPt;
         }
         if(!accept) break;
