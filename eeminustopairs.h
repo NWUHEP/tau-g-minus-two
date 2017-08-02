@@ -21,14 +21,14 @@ class eeminustollbar: public twototwommt{
   eeminustollbar(double thetamin);
  
  /* the second of these computes the cross section over
-          ECM > ECMmin.  The default value is ECMmin = 2 GeV.
+          theta > thetamin in mrad
                                                            */
   int computeKinematics(double & J, DVector & X, double s, double beta);
   void crosssection();
   LEvent buildEvent();
 
   void produceOnly(int Only);
-    /*   call with muOnly or tauOnly to get a unique lepton   */
+    /*   call with muOnly or tauOnly to get a unique lepton, not recommended due to assuming only taus here   */
 
   double dsigmadcost(double cost, double s);
      /* returns the unpolarized differential cross section as a 
