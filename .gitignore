@@ -4,6 +4,7 @@
 *.org
 lpair
 starlight
+*.txt
 # Compiled source #
 ###################
 *.com
