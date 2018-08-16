@@ -1,6 +1,7 @@
 #include "myTreeMaker.h"
 using namespace std;
 
+
 //particle mass from id, mainly for the leptons/protons since inf eta makes the pt, eta formula weird
 Double_t massID(Int_t id) {
 
@@ -26,10 +27,13 @@ Double_t massID(Int_t id) {
 }
 
 //initialize the trees and the branches for the particle trees
+
+
 void bookHistograms() {
   xsecOut = new TTree("xsec", "Cross Section information");
   for(int i = 0; i < n; i++) {
     if(sets[i]) {
+
       char* dirname        = new char[20];
       char* strname        = new char[20];
       char* histMname1     = new char[20];
@@ -72,7 +76,6 @@ void bookHistograms() {
       massH2[i] = new TH1F(histMname2,"Invariant Mass of Lepton System", 200,0,200);
       rapidityH[i] = new TH1F(histRname,"Rapidity of Lepton System", 120,-3,3);
       ptVsMass[i] = new TH2F(histptVsMname,"Lepton Pt vs Lepton System Mass", 100,0,500,100,0,500);
-
     }
   }
 }
@@ -113,8 +116,7 @@ void myTreeMaker(Int_t leptonNum = 15, TString filename = "events.root", TString
 
   sets[0] = 1; //all events
   //1-20 reserved for invariant mass > 110
-  //20-40 reserved for invariant mass > 400
-  
+  //20-40 reserved for invariant mass > 400  
   sets[1] = 1; //invariant mass > 110
   sets[2] = 1; // " + pt of each lepton > 33
   sets[3] = 1; // " + pt of each lepton > 38
