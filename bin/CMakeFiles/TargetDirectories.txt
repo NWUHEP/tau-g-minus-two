@@ -1,0 +1,4 @@
+/home/mack/Starlight/starlight300/bin/CMakeFiles/edit_cache.dir
+/home/mack/Starlight/starlight300/bin/CMakeFiles/rebuild_cache.dir
+/home/mack/Starlight/starlight300/bin/CMakeFiles/starlight.dir
+/home/mack/Starlight/starlight300/bin/CMakeFiles/Starlib.dir
