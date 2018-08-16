@@ -5,6 +5,7 @@
 lpair
 starlight
 *.txt
+*.out
 # Compiled source #
 ###################
 *.com
