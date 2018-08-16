@@ -1,6 +1,7 @@
 *.root
 *.png
 *~
+*.org
 lpair
 # Compiled source #
 ###################
