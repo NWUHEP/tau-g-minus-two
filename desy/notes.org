@@ -268,6 +268,11 @@ sector 56, RP 210F: frac > 0.032
 Finally, require frac of leptons and frac of RP agree within 2 sigma of their
 combined uncertainty
 
+* <2018-08-20 Mon>
+Reran the events.root files through the myTreeMaker.C with the directories setup
+Much more organized, but left the naming of the histograms/trees the same
+* <2018-08-16 Thu>
+Added a git repository for the project, under tau-g-minus-2 directory
 * <2018-08-09 Thu>
 Added a second mass histogram, with a lower range for low mass regions
 Added to the hstackMaker.C script so that it creates png files for each

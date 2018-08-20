@@ -25,33 +25,48 @@ void pngWriter(THStack* h, TString xtitle, TString ytitle, TString outfile, TH1*
 //before doing .L hstackMaker
 // hstackMaker()
 void hstackMaker(){
-  TH1* massH10_0  = (TH1F*) _file0->Get("massH1_10");
-  TH1* massH10_1  = (TH1F*) _file1->Get("massH1_10");
-  TH1* massH10_2  = (TH1F*) _file2->Get("massH1_10");
-  TH1* massH10_3  = (TH1F*) _file3->Get("massH1_10");
-  TH1* massH10_4  = (TH1F*) _file4->Get("massH1_10");
-  TH1* massH10_5  = (TH1F*) _file5->Get("massH1_10");
-		 
-  TH1* massH9_0   = (TH1F*) _file0->Get("massH1_9") ;
-  TH1* massH9_1   = (TH1F*) _file1->Get("massH1_9") ;
-  TH1* massH9_2   = (TH1F*) _file2->Get("massH1_9") ;
-  TH1* massH9_3   = (TH1F*) _file3->Get("massH1_9") ; 
-  TH1* massH9_4   = (TH1F*) _file4->Get("massH1_9") ;
-  TH1* massH9_5   = (TH1F*) _file5->Get("massH1_9") ;
 
-  TH1* massH241_0 = (TH1F*) _file0->Get("massH2_41");
-  TH1* massH241_1 = (TH1F*) _file1->Get("massH2_41");
-  TH1* massH241_2 = (TH1F*) _file2->Get("massH2_41");
-  TH1* massH241_3 = (TH1F*) _file3->Get("massH2_41");
-  TH1* massH241_4 = (TH1F*) _file4->Get("massH2_41");
-  TH1* massH241_5 = (TH1F*) _file5->Get("massH2_41");
+  TFile* file0 = new TFile("Data/events_full_electron_disassociate_MinE20_MinPt10.root");
+  TFile* file1 = new TFile("Data/events_full_electron_elastic_MinE20_MinPt10.root");
+  TFile* file2 = new TFile("Data/events_full_muon_disassociate_MinE20_MinPt10.root");
+  TFile* file3 = new TFile("Data/events_full_muon_elastic_MinE20_MinPt10.root");
+  TFile* file4 = new TFile("Data/events_full_tau_disassociate_MinE20_MinPt10.root");
+  TFile* file5 = new TFile("Data/events_full_tau_elastic_MinE20_MinPt10.root");
 
-  TH1* massH41_0  = (TH1F*) _file0->Get("massH1_41");
-  TH1* massH41_1  = (TH1F*) _file1->Get("massH1_41");
-  TH1* massH41_2  = (TH1F*) _file2->Get("massH1_41");
-  TH1* massH41_3  = (TH1F*) _file3->Get("massH1_41");
-  TH1* massH41_4  = (TH1F*) _file4->Get("massH1_41");
-  TH1* massH41_5  = (TH1F*) _file5->Get("massH1_41");
+  TFile* data0 = (TFile*) file0->Get("Data");
+  TFile* data1 = (TFile*) file1->Get("Data");
+  TFile* data2 = (TFile*) file2->Get("Data");
+  TFile* data3 = (TFile*) file3->Get("Data");
+  TFile* data4 = (TFile*) file4->Get("Data");
+  TFile* data5 = (TFile*) file5->Get("Data");
+
+  TH1* massH10_0   = (TH1F*) ((TFile*) data0->Get("book_10"))->Get("massH1_10");
+  TH1* massH10_1   = (TH1F*) ((TFile*) data1->Get("book_10"))->Get("massH1_10");
+  TH1* massH10_2   = (TH1F*) ((TFile*) data2->Get("book_10"))->Get("massH1_10");
+  TH1* massH10_3   = (TH1F*) ((TFile*) data3->Get("book_10"))->Get("massH1_10");
+  TH1* massH10_4   = (TH1F*) ((TFile*) data4->Get("book_10"))->Get("massH1_10");
+  TH1* massH10_5   = (TH1F*) ((TFile*) data5->Get("book_10"))->Get("massH1_10");
+
+  TH1* massH9_0    = (TH1F*) ((TFile*) data0->Get("book_9"))->Get("massH1_9");
+  TH1* massH9_1    = (TH1F*) ((TFile*) data1->Get("book_9"))->Get("massH1_9");
+  TH1* massH9_2    = (TH1F*) ((TFile*) data2->Get("book_9"))->Get("massH1_9");
+  TH1* massH9_3    = (TH1F*) ((TFile*) data3->Get("book_9"))->Get("massH1_9");
+  TH1* massH9_4    = (TH1F*) ((TFile*) data4->Get("book_9"))->Get("massH1_9");
+  TH1* massH9_5    = (TH1F*) ((TFile*) data5->Get("book_9"))->Get("massH1_9");
+						   
+  TH1* massH241_0  = (TH1F*) ((TFile*) data0->Get("book_41"))->Get("massH2_41");
+  TH1* massH241_1  = (TH1F*) ((TFile*) data1->Get("book_41"))->Get("massH2_41");
+  TH1* massH241_2  = (TH1F*) ((TFile*) data2->Get("book_41"))->Get("massH2_41");
+  TH1* massH241_3  = (TH1F*) ((TFile*) data3->Get("book_41"))->Get("massH2_41");
+  TH1* massH241_4  = (TH1F*) ((TFile*) data4->Get("book_41"))->Get("massH2_41");
+  TH1* massH241_5  = (TH1F*) ((TFile*) data5->Get("book_41"))->Get("massH2_41");
+						   
+  TH1* massH41_0   = (TH1F*) ((TFile*) data0->Get("book_41"))->Get("massH1_41");
+  TH1* massH41_1   = (TH1F*) ((TFile*) data1->Get("book_41"))->Get("massH1_41");
+  TH1* massH41_2   = (TH1F*) ((TFile*) data2->Get("book_41"))->Get("massH1_41");
+  TH1* massH41_3   = (TH1F*) ((TFile*) data3->Get("book_41"))->Get("massH1_41");
+  TH1* massH41_4   = (TH1F*) ((TFile*) data4->Get("book_41"))->Get("massH1_41");
+  TH1* massH41_5   = (TH1F*) ((TFile*) data5->Get("book_41"))->Get("massH1_41");
 
   massH10_0->Rebin(10);
   massH10_1->Rebin(10);
@@ -161,26 +176,26 @@ void hstackMaker(){
   massH241_T->Add(massH241_4);
   massH241_T->Add(massH241_5);
 
-  TH1* rapidityH10_0 = (TH1F*) _file0->Get("rapidityH_10");
-  TH1* rapidityH10_1 = (TH1F*) _file1->Get("rapidityH_10");
-  TH1* rapidityH10_2 = (TH1F*) _file2->Get("rapidityH_10");
-  TH1* rapidityH10_3 = (TH1F*) _file3->Get("rapidityH_10");
-  TH1* rapidityH10_4 = (TH1F*) _file4->Get("rapidityH_10");
-  TH1* rapidityH10_5 = (TH1F*) _file5->Get("rapidityH_10");
+  TH1* rapidityH10_0   = (TH1F*) ((TFile*) data0->Get("book_10"))->Get("rapidityH_10");
+  TH1* rapidityH10_1   = (TH1F*) ((TFile*) data1->Get("book_10"))->Get("rapidityH_10");
+  TH1* rapidityH10_2   = (TH1F*) ((TFile*) data2->Get("book_10"))->Get("rapidityH_10");
+  TH1* rapidityH10_3   = (TH1F*) ((TFile*) data3->Get("book_10"))->Get("rapidityH_10");
+  TH1* rapidityH10_4   = (TH1F*) ((TFile*) data4->Get("book_10"))->Get("rapidityH_10");
+  TH1* rapidityH10_5   = (TH1F*) ((TFile*) data5->Get("book_10"))->Get("rapidityH_10");
 
-  TH1* rapidityH9_0  = (TH1F*) _file0->Get("rapidityH_9");
-  TH1* rapidityH9_1  = (TH1F*) _file1->Get("rapidityH_9");
-  TH1* rapidityH9_2  = (TH1F*) _file2->Get("rapidityH_9");
-  TH1* rapidityH9_3  = (TH1F*) _file3->Get("rapidityH_9");
-  TH1* rapidityH9_4  = (TH1F*) _file4->Get("rapidityH_9");
-  TH1* rapidityH9_5  = (TH1F*) _file5->Get("rapidityH_9");
-
-  TH1* rapidityH41_0 = (TH1F*) _file0->Get("rapidityH_41");
-  TH1* rapidityH41_1 = (TH1F*) _file1->Get("rapidityH_41");
-  TH1* rapidityH41_2 = (TH1F*) _file2->Get("rapidityH_41");
-  TH1* rapidityH41_3 = (TH1F*) _file3->Get("rapidityH_41");
-  TH1* rapidityH41_4 = (TH1F*) _file4->Get("rapidityH_41");
-  TH1* rapidityH41_5 = (TH1F*) _file5->Get("rapidityH_41");
+  TH1* rapidityH9_0    = (TH1F*) ((TFile*) data0->Get("book_9"))->Get("rapidityH_9");
+  TH1* rapidityH9_1    = (TH1F*) ((TFile*) data1->Get("book_9"))->Get("rapidityH_9");
+  TH1* rapidityH9_2    = (TH1F*) ((TFile*) data2->Get("book_9"))->Get("rapidityH_9");
+  TH1* rapidityH9_3    = (TH1F*) ((TFile*) data3->Get("book_9"))->Get("rapidityH_9");
+  TH1* rapidityH9_4    = (TH1F*) ((TFile*) data4->Get("book_9"))->Get("rapidityH_9");
+  TH1* rapidityH9_5    = (TH1F*) ((TFile*) data5->Get("book_9"))->Get("rapidityH_9");
+						   
+  TH1* rapidityH41_0  = (TH1F*) ((TFile*) data0->Get("book_41"))->Get("rapidityH_41");
+  TH1* rapidityH41_1  = (TH1F*) ((TFile*) data1->Get("book_41"))->Get("rapidityH_41");
+  TH1* rapidityH41_2  = (TH1F*) ((TFile*) data2->Get("book_41"))->Get("rapidityH_41");
+  TH1* rapidityH41_3  = (TH1F*) ((TFile*) data3->Get("book_41"))->Get("rapidityH_41");
+  TH1* rapidityH41_4  = (TH1F*) ((TFile*) data4->Get("book_41"))->Get("rapidityH_41");
+  TH1* rapidityH41_5  = (TH1F*) ((TFile*) data5->Get("book_41"))->Get("rapidityH_41");
 
   rapidityH10_0->Rebin(10);
   rapidityH10_1->Rebin(10);
