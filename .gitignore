@@ -2,7 +2,16 @@
 *.png
 *~
 *.org
+*.lhe
 lpair
+source/*
+*.f
+lpair.h
+*.cpp
+convert.C
+ConvertLPairToLHE.C
+cdf/*
+commons/*
 # Compiled source #
 ###################
 *.com
