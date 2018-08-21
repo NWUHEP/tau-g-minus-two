@@ -76,30 +76,30 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
     massH9_7       = (TH1F*) ((TFile*) data7->Get("book_13"))->Get("massH1_13");
   }
   
-  TH1* massH241_0  = (TH1F*) ((TFile*) data0->Get("book_41"))->Get("massH2_41");
-  TH1* massH241_1  = (TH1F*) ((TFile*) data1->Get("book_41"))->Get("massH2_41");
-  TH1* massH241_2  = (TH1F*) ((TFile*) data2->Get("book_41"))->Get("massH2_41");
-  TH1* massH241_3  = (TH1F*) ((TFile*) data3->Get("book_41"))->Get("massH2_41");
-  TH1* massH241_4  = (TH1F*) ((TFile*) data4->Get("book_41"))->Get("massH2_41");
-  TH1* massH241_5  = (TH1F*) ((TFile*) data5->Get("book_41"))->Get("massH2_41");
+  TH1* massH241_0  = (TH1F*) ((TFile*) data0->Get("book_44"))->Get("massH2_44");
+  TH1* massH241_1  = (TH1F*) ((TFile*) data1->Get("book_44"))->Get("massH2_44");
+  TH1* massH241_2  = (TH1F*) ((TFile*) data2->Get("book_44"))->Get("massH2_44");
+  TH1* massH241_3  = (TH1F*) ((TFile*) data3->Get("book_44"))->Get("massH2_44");
+  TH1* massH241_4  = (TH1F*) ((TFile*) data4->Get("book_44"))->Get("massH2_44");
+  TH1* massH241_5  = (TH1F*) ((TFile*) data5->Get("book_44"))->Get("massH2_44");
   TH1* massH241_6 = 0;
   TH1* massH241_7 = 0;
   if(drellYan) {
-    massH241_6     = (TH1F*) ((TFile*) data6->Get("book_41"))->Get("massH2_41");
-    massH241_7     = (TH1F*) ((TFile*) data7->Get("book_41"))->Get("massH2_41");
+    massH241_6     = (TH1F*) ((TFile*) data6->Get("book_47"))->Get("massH2_47");
+    massH241_7     = (TH1F*) ((TFile*) data7->Get("book_47"))->Get("massH2_47");
   }
 						   
-  TH1* massH41_0   = (TH1F*) ((TFile*) data0->Get("book_41"))->Get("massH1_41");
-  TH1* massH41_1   = (TH1F*) ((TFile*) data1->Get("book_41"))->Get("massH1_41");
-  TH1* massH41_2   = (TH1F*) ((TFile*) data2->Get("book_41"))->Get("massH1_41");
-  TH1* massH41_3   = (TH1F*) ((TFile*) data3->Get("book_41"))->Get("massH1_41");
-  TH1* massH41_4   = (TH1F*) ((TFile*) data4->Get("book_41"))->Get("massH1_41");
-  TH1* massH41_5   = (TH1F*) ((TFile*) data5->Get("book_41"))->Get("massH1_41");
+  TH1* massH41_0   = (TH1F*) ((TFile*) data0->Get("book_44"))->Get("massH1_44");
+  TH1* massH41_1   = (TH1F*) ((TFile*) data1->Get("book_44"))->Get("massH1_44");
+  TH1* massH41_2   = (TH1F*) ((TFile*) data2->Get("book_44"))->Get("massH1_44");
+  TH1* massH41_3   = (TH1F*) ((TFile*) data3->Get("book_44"))->Get("massH1_44");
+  TH1* massH41_4   = (TH1F*) ((TFile*) data4->Get("book_44"))->Get("massH1_44");
+  TH1* massH41_5   = (TH1F*) ((TFile*) data5->Get("book_44"))->Get("massH1_44");
   TH1* massH41_6 = 0;
   TH1* massH41_7 = 0;
   if(drellYan) {
-    massH41_6      = (TH1F*) ((TFile*) data6->Get("book_41"))->Get("massH1_41");
-    massH41_7      = (TH1F*) ((TFile*) data7->Get("book_41"))->Get("massH1_41");
+    massH41_6      = (TH1F*) ((TFile*) data6->Get("book_47"))->Get("massH1_47");
+    massH41_7      = (TH1F*) ((TFile*) data7->Get("book_47"))->Get("massH1_47");
   }
 
   massH10_0->Rebin(10);
@@ -261,17 +261,17 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
     rapidityH9_7       = (TH1F*) ((TFile*) data7->Get("book_13"))->Get("rapidityH_13");
   }
 						   
-  TH1* rapidityH41_0   = (TH1F*) ((TFile*) data0->Get("book_41"))->Get("rapidityH_41");
-  TH1* rapidityH41_1   = (TH1F*) ((TFile*) data1->Get("book_41"))->Get("rapidityH_41");
-  TH1* rapidityH41_2   = (TH1F*) ((TFile*) data2->Get("book_41"))->Get("rapidityH_41");
-  TH1* rapidityH41_3   = (TH1F*) ((TFile*) data3->Get("book_41"))->Get("rapidityH_41");
-  TH1* rapidityH41_4   = (TH1F*) ((TFile*) data4->Get("book_41"))->Get("rapidityH_41");
-  TH1* rapidityH41_5   = (TH1F*) ((TFile*) data5->Get("book_41"))->Get("rapidityH_41");
+  TH1* rapidityH41_0   = (TH1F*) ((TFile*) data0->Get("book_44"))->Get("rapidityH_44");
+  TH1* rapidityH41_1   = (TH1F*) ((TFile*) data1->Get("book_44"))->Get("rapidityH_44");
+  TH1* rapidityH41_2   = (TH1F*) ((TFile*) data2->Get("book_44"))->Get("rapidityH_44");
+  TH1* rapidityH41_3   = (TH1F*) ((TFile*) data3->Get("book_44"))->Get("rapidityH_44");
+  TH1* rapidityH41_4   = (TH1F*) ((TFile*) data4->Get("book_44"))->Get("rapidityH_44");
+  TH1* rapidityH41_5   = (TH1F*) ((TFile*) data5->Get("book_44"))->Get("rapidityH_44");
   TH1* rapidityH41_6 = 0;
   TH1* rapidityH41_7 = 0;
   if(drellYan) {
-    rapidityH41_6      = (TH1F*) ((TFile*) data6->Get("book_41"))->Get("rapidityH_41");
-    rapidityH41_7      = (TH1F*) ((TFile*) data7->Get("book_41"))->Get("rapidityH_41");
+    rapidityH41_6      = (TH1F*) ((TFile*) data6->Get("book_47"))->Get("rapidityH_47");
+    rapidityH41_7      = (TH1F*) ((TFile*) data7->Get("book_47"))->Get("rapidityH_47");
   }
 
   rapidityH10_0->Rebin(10);
@@ -386,12 +386,12 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
     pngWriter(massH10_E, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH10_E.png",  massH10_0, massH10_1, massH10_6); 
     pngWriter(massH10_M, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH10_M.png",  massH10_2, massH10_3, massH10_7); 
     pngWriter(massH10_T, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH10_T.png",  massH10_4, massH10_5, 0); 
-    pngWriter(massH41_E, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH41_E.png",  massH41_0, massH41_1, massH41_6); 
-    pngWriter(massH41_M, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH41_M.png",  massH41_2, massH41_3, massH41_7); 
-    pngWriter(massH41_T, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH41_T.png",  massH41_4, massH41_5, 0); 
-    pngWriter(massH241_E,"Lepton System Invariant Mass (GeV)","Events / 10 GeV", "massH241_E.png", massH41_0, massH241_1, massH241_6); 
-    pngWriter(massH241_M,"Lepton System Invariant Mass (GeV)","Events / 10 GeV", "massH241_M.png", massH41_2, massH241_3, massH241_7); 
-    pngWriter(massH241_T,"Lepton System Invariant Mass (GeV)","Events / 10 GeV", "massH241_T.png", massH41_4, massH241_5, 0); 
+    pngWriter(massH41_E, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH44_E.png",  massH41_0, massH41_1, massH41_6); 
+    pngWriter(massH41_M, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH44_M.png",  massH41_2, massH41_3, massH41_7); 
+    pngWriter(massH41_T, "Lepton System Invariant Mass (GeV)","Events / 50 GeV", "massH44_T.png",  massH41_4, massH41_5, 0); 
+    pngWriter(massH241_E,"Lepton System Invariant Mass (GeV)","Events / 10 GeV", "massH244_E.png", massH41_0, massH241_1, massH241_6); 
+    pngWriter(massH241_M,"Lepton System Invariant Mass (GeV)","Events / 10 GeV", "massH244_M.png", massH41_2, massH241_3, massH241_7); 
+    pngWriter(massH241_T,"Lepton System Invariant Mass (GeV)","Events / 10 GeV", "massH244_T.png", massH41_4, massH241_5, 0); 
   }
   massH10_T->Write();
   massH10_M->Write();
@@ -413,9 +413,9 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
     pngWriter(rapidityH10_E, "Lepton System Rapidity","Events / 0.5", "rapidityH10_E.png", rapidityH10_0, rapidityH10_1, rapidityH10_6); 
     pngWriter(rapidityH10_M, "Lepton System Rapidity","Events / 0.5", "rapidityH10_M.png", rapidityH10_2, rapidityH10_3, rapidityH10_7); 
     pngWriter(rapidityH10_T, "Lepton System Rapidity","Events / 0.5", "rapidityH10_T.png", rapidityH10_4, rapidityH10_5, 0); 
-    pngWriter(rapidityH41_E, "Lepton System Rapidity","Events / 0.5", "rapidityH41_E.png", rapidityH41_0, rapidityH41_1, rapidityH41_6); 
-    pngWriter(rapidityH41_M, "Lepton System Rapidity","Events / 0.5", "rapidityH41_M.png", rapidityH41_2, rapidityH41_3, rapidityH41_7); 
-    pngWriter(rapidityH41_T, "Lepton System Rapidity","Events / 0.5", "rapidityH41_T.png", rapidityH41_4, rapidityH41_5, 0); 
+    pngWriter(rapidityH41_E, "Lepton System Rapidity","Events / 0.5", "rapidityH44_E.png", rapidityH41_0, rapidityH41_1, rapidityH41_6); 
+    pngWriter(rapidityH41_M, "Lepton System Rapidity","Events / 0.5", "rapidityH44_M.png", rapidityH41_2, rapidityH41_3, rapidityH41_7); 
+    pngWriter(rapidityH41_T, "Lepton System Rapidity","Events / 0.5", "rapidityH44_T.png", rapidityH41_4, rapidityH41_5, 0); 
   }
   
   rapidityH10_T->Write();

@@ -111,16 +111,24 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
   sets[10] = 1; // "       "    "    "  + "      "  + acoplane < 0.006
   sets[14] = 1; // " + nJets < 1 
   sets[12] = 1; // Mass > 110 + pt > 50 + eta < 2.4 + acoplane < 0.006 + fracLoss check
+  sets[15] = 1; // M > 110, pt>50, eta<2.4, acoplane<0.006, nJets>1, pt lead/pt trail > 0.95
   
   sets[21] = 1; //invariant mass > 400
   sets[22] = 1; // " + pt of each lepton > 33
   sets[23] = 1; // " + pt of each lepton > 38
   sets[24] = 1; // " + pt of each lepton > 50
 
+  //No invariant Mass Cut
+  //MASS CUT AT 50 ALREADY IN NTUPLE SO THIS NEEDS FIXING
   sets[41] = 1; //Pt > 20 and eta < 2.4
+  sets[43] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.009
+  sets[44] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.006
   sets[42] = 1; //Pt > 33 and eta < 2.4
-  sets[43] = 1; //Pt > 33 and eta < 2.4 and nJets < 1
-  
+  sets[45] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.009
+  sets[46] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.006
+  sets[47] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.006 and nJets < 1
+  sets[48] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.006 and nJets < 1
+  sets[50] = 1; //pt>20, eta<2.4, acoplane<0.006, nJets>1, pt lead/pt trail > 0.95
  
   //initialize input and output file
   TFile *f1 = TFile::Open(filename);
@@ -208,9 +216,16 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
     //no mass requirements
     if(abs(tau->Eta()) < 2.4 and abs(antitau->Eta()) < 2.4 and tau->Pt() > 20 and antitau->Pt() > 20) {
       if(sets[41]) fillHistograms(41);
+      if(sets[43] and acoplane < 0.009) fillHistograms(43);
+      if(sets[44] and acoplane < 0.006) fillHistograms(44);
+      if(sets[47] and acoplane < 0.006 and nJets < 1) fillHistograms(47);
+      if(sets[50] and acoplane < 0.006 and nJets < 1
+	 and (tau->Pt()/antitau->Pt() > 0.95) and (antitau->Pt()/tau->Pt() > 0.95)) fillHistograms(50);
       if(tau->Pt() > 33 and antitau->Pt() > 33) {
 	if(sets[42]) fillHistograms(42);
-	if(sets[43] and nJets < 1) fillHistograms(43);
+	if(sets[45] and acoplane < 0.009) fillHistograms(45);
+	if(sets[46] and acoplane < 0.006) fillHistograms(46);
+	if(sets[48] and acoplane < 0.006 and nJets < 1) fillHistograms(48);   
       }
     }
     if(tauSys->M() > 110) {
@@ -234,6 +249,8 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
 	      if(acoplane < 0.006) {
 		if(sets[10] and abs(tau->Eta()) < 2.4 and abs(antitau->Eta()) < 2.4) {
 		  fillHistograms(10);
+		  if(sets[15] and nJets < 1 and (tau->Pt()/antitau->Pt() > 0.95)
+		     and (antitau->Pt()/tau->Pt() > 0.95)) fillHistograms(15);
 		  if(sets[14] and nJets < 1) fillHistograms(14);
 		  if(sets[12] and (fracLossPlus > 0.032 or fracLossMinus > 0.024)) fillHistograms(12);
 		}

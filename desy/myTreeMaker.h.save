@@ -2,13 +2,12 @@
 #include "TTree.h"
 #include "TH1.h"
 #include "TLorentzVector.h"
-#include "TVector3.h"
 #include "TDirectory.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-const Int_t n = 100; //max histogram sets
+const Int_t n = 50; //max histogram sets
 const Int_t N = 200; //max particles in event
 
 TDirectory* topdir;
@@ -26,33 +25,29 @@ TH1* rapidityH[n];
 Double_t lum;
 
 //run information read
-Double_t xsec;
+Double_t sqrtS,xsec, errxsec;
 //particle inputs read
-Int_t nevts, totalEvents;
+Double_t pt[N],en[N],eta[N],phi[N],rapidity[N],charge[N];
+Int_t partid[N], parent1[N], parent2[N], status[N];
+Int_t nevts;
 
-TVector3* primaryV;
-TLorentzVector* momentum1;
-TLorentzVector* momentum2;
 TLorentzVector* tauSys;
+TLorentzVector* gammaSys;
 TLorentzVector* tau;
 TLorentzVector* antitau;
-Int_t pdg1;
-Int_t pdg2;
-UInt_t nElectrons;
-UInt_t nMuons;
-UInt_t nTaus;
-UInt_t nJets;
-Float_t iso1;
-Float_t iso2;
-Float_t d01;
-Float_t d02;
-Float_t eventWeight;
-Double_t px1;
-Double_t py1;
-Double_t pz1;
-Double_t px2;
-Double_t py2;
-Double_t pz2;
+TLorentzVector* gamma1;
+TLorentzVector* gamma2;
+TLorentzVector* proton1;
+TLorentzVector* proton2;
+Int_t partidOut[N];
+Int_t parent1Out[N];
+Int_t parent2Out[N];
+Int_t statusOut[N];
+Double_t px[N];
+Double_t py[N];
+Double_t pz[N];
+Int_t np;
+Int_t npOut;
 Double_t acoplane;
 Double_t fracLossPlus;
 Double_t fracLossMinus;

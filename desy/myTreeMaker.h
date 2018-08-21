@@ -7,7 +7,7 @@
 #include <fstream>
 #include <sstream>
 
-const Int_t n = 50; //max histogram sets
+const Int_t n = 100; //max histogram sets
 const Int_t N = 200; //max particles in event
 
 TDirectory* topdir;
