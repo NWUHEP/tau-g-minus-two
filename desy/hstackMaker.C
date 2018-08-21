@@ -59,8 +59,8 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
   TH1* massH10_6 = 0;
   TH1* massH10_7 = 0;
   if(drellYan) {
-    massH10_6      = (TH1F*) ((TFile*) data6->Get("book_10"))->Get("massH1_10");
-    massH10_7      = (TH1F*) ((TFile*) data7->Get("book_10"))->Get("massH1_10");
+    massH10_6      = (TH1F*) ((TFile*) data6->Get("book_14"))->Get("massH1_14");
+    massH10_7      = (TH1F*) ((TFile*) data7->Get("book_14"))->Get("massH1_14");
   }
   
   TH1* massH9_0    = (TH1F*) ((TFile*) data0->Get("book_9"))->Get("massH1_9");
@@ -72,8 +72,8 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
   TH1* massH9_6 = 0;
   TH1* massH9_7 = 0;
   if(drellYan) {
-    massH9_6       = (TH1F*) ((TFile*) data6->Get("book_9"))->Get("massH1_9");
-    massH9_7       = (TH1F*) ((TFile*) data7->Get("book_9"))->Get("massH1_9");
+    massH9_6       = (TH1F*) ((TFile*) data6->Get("book_13"))->Get("massH1_13");
+    massH9_7       = (TH1F*) ((TFile*) data7->Get("book_13"))->Get("massH1_13");
   }
   
   TH1* massH241_0  = (TH1F*) ((TFile*) data0->Get("book_41"))->Get("massH2_41");
@@ -244,8 +244,8 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
   TH1* rapidityH10_6 = 0;
   TH1* rapidityH10_7 = 0;
   if(drellYan) {
-    rapidityH10_6      = (TH1F*) ((TFile*) data6->Get("book_10"))->Get("rapidityH_10");
-    rapidityH10_7      = (TH1F*) ((TFile*) data7->Get("book_10"))->Get("rapidityH_10");
+    rapidityH10_6      = (TH1F*) ((TFile*) data6->Get("book_14"))->Get("rapidityH_14");
+    rapidityH10_7      = (TH1F*) ((TFile*) data7->Get("book_14"))->Get("rapidityH_14");
   }
   
   TH1* rapidityH9_0    = (TH1F*) ((TFile*) data0->Get("book_9"))->Get("rapidityH_9");
@@ -257,8 +257,8 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
   TH1* rapidityH9_6 = 0;
   TH1* rapidityH9_7 = 0;
   if(drellYan) {
-    rapidityH9_6       = (TH1F*) ((TFile*) data6->Get("book_9"))->Get("rapidityH_9");
-    rapidityH9_7       = (TH1F*) ((TFile*) data7->Get("book_9"))->Get("rapidityH_9");
+    rapidityH9_6       = (TH1F*) ((TFile*) data6->Get("book_13"))->Get("rapidityH_13");
+    rapidityH9_7       = (TH1F*) ((TFile*) data7->Get("book_13"))->Get("rapidityH_13");
   }
 						   
   TH1* rapidityH41_0   = (TH1F*) ((TFile*) data0->Get("book_41"))->Get("rapidityH_41");
