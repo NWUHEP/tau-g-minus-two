@@ -12,6 +12,7 @@ convert.C
 ConvertLPairToLHE.C
 cdf/*
 commons/*
+*.save
 # Compiled source #
 ###################
 *.com
