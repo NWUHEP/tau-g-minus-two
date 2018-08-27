@@ -39,6 +39,7 @@ void bookHistograms() {
       char* histMname1     = new char[20];
       char* histMname2     = new char[20];
       char* histRname      = new char[20];
+      char* histptMname    = new char[20];
       char* histptVsMname  = new char[20];
       sprintf(dirname,"book_%i",i);
       sprintf(strname,"treeBook_%i",i);
@@ -46,6 +47,7 @@ void bookHistograms() {
       sprintf(histMname2,"massH2_%i",i);
       sprintf(histRname,"rapidityH_%i",i);
       sprintf(histptVsMname,"ptVsMassH_%i",i);
+      sprintf(histptMname,"ptMassH_%i",i);
 
       directories[i] = topdir->mkdir(dirname);
       directories[i]->cd();
@@ -71,11 +73,13 @@ void bookHistograms() {
       treeOut[i]->Branch("acoplanar",     &acoplane,           "acoplanar/D"      );
       treeOut[i]->Branch("fracLossPlus",  &fracLossPlus,       "fracLossPlus/D"   );
       treeOut[i]->Branch("fracLossMinus", &fracLossMinus,      "fracLossMinus/D"  );
+      treeOut[i]->Branch("ptMass",        &ptM,                "ptM/D"            );
 
       massH1[i] = new TH1F(histMname1,"Invariant Mass of Lepton System", 200,0,1000);
       massH2[i] = new TH1F(histMname2,"Invariant Mass of Lepton System", 200,0,200);
+      ptMass[i] = new TH1F(histptMname,"Invariant Mass of Lepton System Over Pt Sum", 250,0,50);
       rapidityH[i] = new TH1F(histRname,"Rapidity of Lepton System", 120,-3,3);
-      ptVsMass[i] = new TH2F(histptVsMname,"Lepton Pt vs Lepton System Mass", 100,0,500,100,0,500);
+      ptVsMass[i] = new TH2F(histptVsMname,"Lepton Pt vs Lepton System Mass", 500,0,500,500,0,500);
     }
   }
 }
@@ -87,6 +91,7 @@ void fillHistograms(Int_t index) {
   massH1[index]->Fill(tauSys->M(),xsec/nevts*1000*lum);
   massH2[index]->Fill(tauSys->M(),xsec/nevts*1000*lum);
   ptVsMass[index]->Fill(tau->Pt(), tauSys->M());
+  ptMass[index]->Fill(ptM);
 
 }
 
@@ -118,31 +123,32 @@ void myTreeMaker(Int_t leptonNum = 15, TString filename = "events.root", TString
   //1-20 reserved for invariant mass > 110
   //20-40 reserved for invariant mass > 400  
   sets[1] = 1; //invariant mass > 110
-  sets[2] = 1; // " + pt of each lepton > 33
-  sets[3] = 1; // " + pt of each lepton > 38
+  sets[2] = 0; // " + pt of each lepton > 33
+  sets[3] = 0; // " + pt of each lepton > 38
   sets[4] = 1; // " + pt of each lepton > 50
   sets[5] = 1; // " + " + acoplane < 0.009
   sets[6] = 1; // " + " + acoplane < 0.006
-  sets[7] = 1; // Mass > 110 + pt > 33 + eta < 2.4
+  sets[7] = 0; // Mass > 110 + pt > 33 + eta < 2.4
   sets[8] = 1; // "       "    pt > 50 + "      "
   sets[9] = 1; // Mass > 110 + pt > 50 + eta < 2.4 + acoplane < 0.009
   sets[11] = 1; // Mass > 110 + pt > 50 + eta < 2.4 + acoplane < 0.009 + fracLoss check
   sets[10] = 1; // "       "    "    "  + "      "  + acoplane < 0.006
   sets[12] = 1; // Mass > 110 + pt > 50 + eta < 2.4 + acoplane < 0.006 + fracLoss check
-  sets[15] = 1; // " +          "  +            "  +       "          +pt leading / pt trailing > 0.95
+  sets[15] = 0; // " +          "  +            "  +       "          +pt leading / pt trailing > 0.95
   
-  sets[21] = 1; //invariant mass > 400
-  sets[22] = 1; // " + pt of each lepton > 33
-  sets[23] = 1; // " + pt of each lepton > 38
-  sets[24] = 1; // " + pt of each lepton > 50
+  sets[21] = 0; //invariant mass > 400
+  sets[22] = 0; // " + pt of each lepton > 33
+  sets[23] = 0; // " + pt of each lepton > 38
+  sets[24] = 0; // " + pt of each lepton > 50
 
   sets[41] = 1; //Pt > 20 and eta < 2.4
   sets[43] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.009
   sets[44] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.006
-  sets[50] = 1; // " +          "  +            "   +pt leading / pt trailing > 0.95
-  sets[42] = 1; //Pt > 33 and eta < 2.4
-  sets[45] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.009
-  sets[46] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.006
+  sets[50] = 0; // " +          "  +            "   +pt leading / pt trailing > 0.95
+  sets[51] = 1; // " +          "  +            "   + 50 GeV < Mass < 80 GeV
+  sets[42] = 0; //Pt > 33 and eta < 2.4
+  sets[45] = 0; //Pt > 33 and eta < 2.4 and acoplane < 0.009
+  sets[46] = 0; //Pt > 33 and eta < 2.4 and acoplane < 0.006
 
  
   //initialize input and output file
@@ -245,6 +251,7 @@ void myTreeMaker(Int_t leptonNum = 15, TString filename = "events.root", TString
     fracLossPlus = 1/sqrtS*(tau->Pt()*exp(tau->Eta())+antitau->Pt()*exp(antitau->Eta()));
     fracLossMinus = 1/sqrtS*(tau->Pt()*exp(-1*tau->Eta())+antitau->Pt()*exp(-1*antitau->Eta()));
 
+    ptM = tauSys->M() / (tau->Pt() + antitau->Pt());
     //kinematic cut filling
     fillHistograms(0);
     //no mass requirements
@@ -253,6 +260,7 @@ void myTreeMaker(Int_t leptonNum = 15, TString filename = "events.root", TString
       if(sets[43] and acoplane < 0.009) fillHistograms(43);
       if(sets[44] and acoplane < 0.006) fillHistograms(44);
       if(sets[50] and acoplane < 0.006 and (tau->Pt()/antitau->Pt() > 0.95) and (antitau->Pt()/tau->Pt() > 0.95)) fillHistograms(50);
+      if(sets[51] and acoplane < 0.006 and tauSys->M() < 80.0 and tauSys->M() > 50.0) fillHistograms(51);
       if(tau->Pt() > 33 and antitau->Pt() > 33) {
 	if(sets[42]) fillHistograms(42);
 	if(sets[45] and acoplane < 0.009) fillHistograms(45);

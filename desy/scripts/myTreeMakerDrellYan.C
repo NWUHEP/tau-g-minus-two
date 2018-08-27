@@ -98,12 +98,12 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
   //1-20 reserved for invariant mass > 110
   //20-40 reserved for invariant mass > 400  
   sets[1] = 1; //invariant mass > 110
-  sets[2] = 1; // " + pt of each lepton > 33
-  sets[3] = 1; // " + pt of each lepton > 38
+  sets[2] = 0; // " + pt of each lepton > 33
+  sets[3] = 0; // " + pt of each lepton > 38
   sets[4] = 1; // " + pt of each lepton > 50
   sets[5] = 1; // " + " + acoplane < 0.009
   sets[6] = 1; // " + " + acoplane < 0.006
-  sets[7] = 1; // Mass > 110 + pt > 33 + eta < 2.4
+  sets[7] = 0; // Mass > 110 + pt > 33 + eta < 2.4
   sets[8] = 1; // "       "    pt > 50 + "      "
   sets[9] = 1; // Mass > 110 + pt > 50 + eta < 2.4 + acoplane < 0.009
   sets[13] = 1; // " + nJets < 1
@@ -111,24 +111,25 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
   sets[10] = 1; // "       "    "    "  + "      "  + acoplane < 0.006
   sets[14] = 1; // " + nJets < 1 
   sets[12] = 1; // Mass > 110 + pt > 50 + eta < 2.4 + acoplane < 0.006 + fracLoss check
-  sets[15] = 1; // M > 110, pt>50, eta<2.4, acoplane<0.006, nJets>1, pt lead/pt trail > 0.95
+  sets[15] = 0; // M > 110, pt>50, eta<2.4, acoplane<0.006, nJets>1, pt lead/pt trail > 0.95
   
-  sets[21] = 1; //invariant mass > 400
-  sets[22] = 1; // " + pt of each lepton > 33
-  sets[23] = 1; // " + pt of each lepton > 38
-  sets[24] = 1; // " + pt of each lepton > 50
+  sets[21] = 0; //invariant mass > 400
+  sets[22] = 0; // " + pt of each lepton > 33
+  sets[23] = 0; // " + pt of each lepton > 38
+  sets[24] = 0; // " + pt of each lepton > 50
 
   //No invariant Mass Cut
   //MASS CUT AT 50 ALREADY IN NTUPLE SO THIS NEEDS FIXING
   sets[41] = 1; //Pt > 20 and eta < 2.4
   sets[43] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.009
   sets[44] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.006
-  sets[42] = 1; //Pt > 33 and eta < 2.4
-  sets[45] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.009
-  sets[46] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.006
+  sets[42] = 0; //Pt > 33 and eta < 2.4
+  sets[45] = 0; //Pt > 33 and eta < 2.4 and acoplane < 0.009
+  sets[46] = 0; //Pt > 33 and eta < 2.4 and acoplane < 0.006
   sets[47] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.006 and nJets < 1
   sets[48] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.006 and nJets < 1
-  sets[50] = 1; //pt>20, eta<2.4, acoplane<0.006, nJets>1, pt lead/pt trail > 0.95
+  sets[50] = 0; //pt>20, eta<2.4, acoplane<0.006, nJets>1, pt lead/pt trail > 0.95
+  sets[51] = 1; //pt>20, eta<2.4, acoplane<0.006, nJets>1, 50 < Mass < 80
  
   //initialize input and output file
   TFile *f1 = TFile::Open(filename);
@@ -221,6 +222,8 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
       if(sets[47] and acoplane < 0.006 and nJets < 1) fillHistograms(47);
       if(sets[50] and acoplane < 0.006 and nJets < 1
 	 and (tau->Pt()/antitau->Pt() > 0.95) and (antitau->Pt()/tau->Pt() > 0.95)) fillHistograms(50);
+      if(sets[51] and acoplane < 0.006 and tauSys->M() < 80.0
+	 and tauSys->M() > 50.0 and nJets < 1) fillHistograms(51);
       if(tau->Pt() > 33 and antitau->Pt() > 33) {
 	if(sets[42]) fillHistograms(42);
 	if(sets[45] and acoplane < 0.009) fillHistograms(45);
