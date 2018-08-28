@@ -90,8 +90,8 @@ void fillHistograms(Int_t index) {
   rapidityH[index]->Fill(tauSys->Rapidity(),xsec/nevts*1000*lum);
   massH1[index]->Fill(tauSys->M(),xsec/nevts*1000*lum);
   massH2[index]->Fill(tauSys->M(),xsec/nevts*1000*lum);
-  ptVsMass[index]->Fill(tau->Pt(), tauSys->M());
-  ptMass[index]->Fill(ptM);
+  ptVsMass[index]->Fill(tau->Pt(), tauSys->M(),xsec/nevts*1000*lum);
+  ptMass[index]->Fill(ptM,xsec/nevts*1000*lum);
 
 }
 
@@ -107,6 +107,7 @@ void writeHistograms() {
       massH2[i]->Write();
       rapidityH[i]->Write();
       ptVsMass[i]->Write();
+      ptMass[i]->Write();
     }
   }
 }

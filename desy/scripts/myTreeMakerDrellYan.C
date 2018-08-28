@@ -14,6 +14,7 @@ void bookHistograms() {
       char* histMname1     = new char[20];
       char* histMname2     = new char[20];
       char* histRname      = new char[20];
+      char* histptMname    = new char[20];
       char* histptVsMname  = new char[20];
       sprintf(dirname,"book_%i",i);
       sprintf(strname,"treeBook_%i",i);
@@ -21,6 +22,7 @@ void bookHistograms() {
       sprintf(histMname2,"massH2_%i",i);
       sprintf(histRname,"rapidityH_%i",i);
       sprintf(histptVsMname,"ptVsMassH_%i",i);
+      sprintf(histptMname,"ptMassH_%i",i);
 
       directories[i] = topdir->mkdir(dirname);
       directories[i]->cd();
@@ -48,11 +50,13 @@ void bookHistograms() {
       treeOut[i]->Branch("acoplanar",     &acoplane,           "acoplanar/D"      );
       treeOut[i]->Branch("fracLossPlus",  &fracLossPlus,       "fracLossPlus/D"   );
       treeOut[i]->Branch("fracLossMinus", &fracLossMinus,      "fracLossMinus/D"  );
+      treeOut[i]->Branch("ptMass",        &ptM,                "ptM/D"            );
 
       massH1[i]    = new TH1F(histMname1,"Invariant Mass of Lepton System", 200,0,1000);
       massH2[i]    = new TH1F(histMname2,"Invariant Mass of Lepton System", 200,0,200);
+      ptMass[i] = new TH1F(histptMname,"Invariant Mass of Lepton System Over Pt Sum", 250,0,50);
       rapidityH[i] = new TH1F(histRname,"Rapidity of Lepton System", 120,-3,3);
-      ptVsMass[i]  = new TH2F(histptVsMname,"Lepton Pt vs Lepton System Mass", 100,0,500,100,0,500);
+      ptVsMass[i]  = new TH2F(histptVsMname,"Lepton Pt vs Lepton System Mass", 500,0,500,500,0,500);
     }
   }
 }
@@ -64,6 +68,7 @@ void fillHistograms(Int_t index) {
   massH1[index]->Fill(tauSys->M(),1000*xsec/totalEvents*lum*eventWeight);
   massH2[index]->Fill(tauSys->M(),1000*xsec/totalEvents*lum*eventWeight);
   ptVsMass[index]->Fill(tau->Pt(), tauSys->M());
+  ptMass[index]->Fill(ptM);
 
 }
 
@@ -79,6 +84,7 @@ void writeHistograms() {
       massH2[i]->Write();
       rapidityH[i]->Write();
       ptVsMass[i]->Write();
+      ptMass[i]->Write();
     }
   }
 }
@@ -211,6 +217,7 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
 
     fracLossPlus  = 1/13000.0*(tau->Pt()*exp(tau->Eta())+antitau->Pt()*exp(antitau->Eta()));
     fracLossMinus = 1/13000.0*(tau->Pt()*exp(-1*tau->Eta())+antitau->Pt()*exp(-1*antitau->Eta()));
+    ptM = tauSys->M() / (tau->Pt() + antitau->Pt());
 
     //kinematic cut filling
     fillHistograms(0);

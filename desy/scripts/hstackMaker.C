@@ -13,12 +13,23 @@ TFile* data7;
 TFile* out;
 Int_t _writeIms;
 Int_t _drell;
+Double_t xmin;
+Double_t xmax;
+Double_t ymin;
+Double_t ymax;
+Int_t setX;
+Int_t setY;
+Int_t setLogy;
 
 void pngWriter(THStack* h, TString xtitle, TString ytitle, TString outfile, TH1* h1, TH1* h2, TH1* h3) {
   TCanvas* c1 = new TCanvas("c1", "Lepton System");
   h->Draw("HIST");
   h->GetXaxis()->SetTitle(xtitle);
   h->GetYaxis()->SetTitle(ytitle);
+  if(setX) h->GetXaxis()->SetLimits(xmin,xmax);
+  if(setX) h->GetYaxis()->SetLimits(ymin,ymax);
+  if(setLogy) c1->SetLogy();
+  
   TLegend *legend = new TLegend(0.6,0.7,0.89,0.89);
   if(h3!=0) legend->AddEntry(h3, "Drell Yan");
   legend->AddEntry(h1,"Semi-Exclusive");
@@ -62,10 +73,12 @@ void stacker(Int_t book, TString hist, Int_t drellBook, TString drellHist, TStri
     if(_drell) massH_6->Rebin(10);
     if(_drell) massH_7->Rebin(10);
   }
-
+  
   char* title = new char[80];
-  if(mVsR) sprintf(title,"Invariant Mass");
-  else sprintf(title,"Rapidity");
+  if(mVsR == 1) sprintf(title,"Invariant Mass");
+  else if(mVsR == 0) sprintf(title,"Rapidity");
+  else               sprintf(title,"Invariant Mass over Pt Sum");
+  
   char* stackName = new char[100];
   sprintf(stackName, "%s of Electron System", title);
   THStack* massH_E  = new THStack("massH_E", stackName);
@@ -98,8 +111,10 @@ void stacker(Int_t book, TString hist, Int_t drellBook, TString drellHist, TStri
 
   if(_writeIms) {
     char* fname = new char[30];
-    if(mVsR) sprintf(title, "Lepton System Invariant Mass (GeV)");
-    else     sprintf(title, "Lepton System Rapidity");
+    if(mVsR == 1)       sprintf(title, "Lepton System Invariant Mass (GeV)");
+    else if(mVsR == 0)  sprintf(title, "Lepton System Rapidity");
+    else sprintf(title, "Lepton System Mass Over Pt Sum");
+    
     if(_drell) std::sprintf(fname,"%s_Drell_E.png",hist.Data());
     else std::sprintf(fname,"%s_E.png",hist.Data());
     pngWriter(massH_E, title, label,  fname,   massH_0,  massH_1, massH_6); 
@@ -115,7 +130,6 @@ void stacker(Int_t book, TString hist, Int_t drellBook, TString drellHist, TStri
   massH_T->Write();
   massH_M->Write();
   massH_E->Write();
-  delete dir;
 }
 
 
@@ -149,7 +163,7 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
   _writeIms = writeImages;
 
   
-
+  setX = 0; setY = 0; setLogy = 0;
   stacker(10,"massH1_10", 14, "massH1_14","Events / 50 GeV", 1, 1);
   stacker(9 ,"massH1_9" , 13, "massH1_13","Events / 50 GeV", 1, 1);
   stacker(44,"massH1_44", 47, "massH1_47","Events / 50 GeV", 1, 1);
@@ -161,13 +175,7 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
   stacker(44,"rapidityH_44", 47, "rapidityH_47","Events / 0.5", 0, 1);
   stacker(51,"rapidityH_51", 51, "rapidityH_51","Events / 0.5", 0, 1);
 
-  // delete file0;
-  // delete file1;
-  // delete file2;
-  // delete file3;
-  // delete file4;
-  // delete file5;
-  // delete file6;
-  // delete file7;
-  delete out;
+  setX = 1; xmin = 0; xmax = 5; setLogy = 1;
+  stacker(0, "ptMassH_0",     0, "ptMassH_0"   ,"Events / 0.2", 2, 0);
+  stacker(51,"ptMassH_51",   51, "ptMassH_51"  ,"Events / 0.2", 2, 0);
 }
