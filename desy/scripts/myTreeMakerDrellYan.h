@@ -19,6 +19,7 @@ TTree* treeOut[n];
 TTree* xsecOut;
 TH2* ptVsMass[n];
 TH1* ptMass[n];
+TH1* massPt[n];
 TH1* massH1[n];
 TH1* massH2[n];
 TH1* rapidityH[n];

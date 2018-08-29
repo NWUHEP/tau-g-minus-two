@@ -40,6 +40,7 @@ void bookHistograms() {
       char* histMname2     = new char[20];
       char* histRname      = new char[20];
       char* histptMname    = new char[20];
+      char* histmPtname    = new char[20];
       char* histptVsMname  = new char[20];
       sprintf(dirname,"book_%i",i);
       sprintf(strname,"treeBook_%i",i);
@@ -48,6 +49,7 @@ void bookHistograms() {
       sprintf(histRname,"rapidityH_%i",i);
       sprintf(histptVsMname,"ptVsMassH_%i",i);
       sprintf(histptMname,"ptMassH_%i",i);
+      sprintf(histmPtname,"massPtH_%i",i);
 
       directories[i] = topdir->mkdir(dirname);
       directories[i]->cd();
@@ -78,6 +80,7 @@ void bookHistograms() {
       massH1[i] = new TH1F(histMname1,"Invariant Mass of Lepton System", 200,0,1000);
       massH2[i] = new TH1F(histMname2,"Invariant Mass of Lepton System", 200,0,200);
       ptMass[i] = new TH1F(histptMname,"Invariant Mass of Lepton System Over Pt Sum", 250,0,50);
+      massPt[i] = new TH1F(histmPtname,"Pt Sum Over Invariant Mass of Lepton System", 300,0,30);
       rapidityH[i] = new TH1F(histRname,"Rapidity of Lepton System", 120,-3,3);
       ptVsMass[i] = new TH2F(histptVsMname,"Lepton Pt vs Lepton System Mass", 500,0,500,500,0,500);
     }
@@ -91,7 +94,8 @@ void fillHistograms(Int_t index) {
   massH1[index]->Fill(tauSys->M(),xsec/nevts*1000*lum);
   massH2[index]->Fill(tauSys->M(),xsec/nevts*1000*lum);
   ptVsMass[index]->Fill(tau->Pt(), tauSys->M(),xsec/nevts*1000*lum);
-  ptMass[index]->Fill(ptM,xsec/nevts*1000*lum);
+  ptMass[index]->Fill(1.0/ptM,xsec/nevts*1000*lum);
+  massPt[index]->Fill(ptM,xsec/nevts*1000*lum);
 
 }
 
@@ -108,6 +112,7 @@ void writeHistograms() {
       rapidityH[i]->Write();
       ptVsMass[i]->Write();
       ptMass[i]->Write();
+      massPt[i]->Write();
     }
   }
 }
@@ -147,6 +152,7 @@ void myTreeMaker(Int_t leptonNum = 15, TString filename = "events.root", TString
   sets[44] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.006
   sets[50] = 0; // " +          "  +            "   +pt leading / pt trailing > 0.95
   sets[51] = 1; // " +          "  +            "   + 50 GeV < Mass < 80 GeV
+  sets[52] = 1; // " +          "  +            "   + 10 GeV < Mass < 50 GeV
   sets[42] = 0; //Pt > 33 and eta < 2.4
   sets[45] = 0; //Pt > 33 and eta < 2.4 and acoplane < 0.009
   sets[46] = 0; //Pt > 33 and eta < 2.4 and acoplane < 0.006
@@ -238,11 +244,12 @@ void myTreeMaker(Int_t leptonNum = 15, TString filename = "events.root", TString
       else if(partid[j] == 2212 and parent1[j] == 1) *proton1 = *part;
       else if(partid[j] == 2212 and parent1[j] == 2) *proton2 = *part;
 
-      if (i%50000==0) cout  << "part " << j <<" lvector: " <<px[j] << " " << py[j] << " " << pz[j] << " " <<
-		       en[j] << "\npart pt, eta, id, status, parent, mass: " << pt[j] << " " << eta[j] << " " <<
-		       partid[j] << " " << status[j] << " " <<
-		       parent1[j] << " " << part->M() << endl;
+      // if (i%50000==0) cout  << "part " << j <<" lvector: " <<px[j] << " " << py[j] << " " << pz[j] << " " <<
+      // 		       en[j] << "\npart pt, eta, id, status, parent, mass: " << pt[j] << " " << eta[j] << " " <<
+      // 		       partid[j] << " " << status[j] << " " <<
+      // 		       parent1[j] << " " << part->M() << endl;
     }
+    // if(i%50000==0) cout << "Event " << i << " of " << nevts << endl;
 
     *tauSys = *tau+*antitau;
     *gammaSys = *gamma1+*gamma2;
@@ -252,7 +259,7 @@ void myTreeMaker(Int_t leptonNum = 15, TString filename = "events.root", TString
     fracLossPlus = 1/sqrtS*(tau->Pt()*exp(tau->Eta())+antitau->Pt()*exp(antitau->Eta()));
     fracLossMinus = 1/sqrtS*(tau->Pt()*exp(-1*tau->Eta())+antitau->Pt()*exp(-1*antitau->Eta()));
 
-    ptM = tauSys->M() / (tau->Pt() + antitau->Pt());
+    ptM = (tau->Pt() + antitau->Pt()) / tauSys->M();
     //kinematic cut filling
     fillHistograms(0);
     //no mass requirements
@@ -262,6 +269,7 @@ void myTreeMaker(Int_t leptonNum = 15, TString filename = "events.root", TString
       if(sets[44] and acoplane < 0.006) fillHistograms(44);
       if(sets[50] and acoplane < 0.006 and (tau->Pt()/antitau->Pt() > 0.95) and (antitau->Pt()/tau->Pt() > 0.95)) fillHistograms(50);
       if(sets[51] and acoplane < 0.006 and tauSys->M() < 80.0 and tauSys->M() > 50.0) fillHistograms(51);
+      if(sets[51] and acoplane < 0.006 and tauSys->M() < 50.0 and tauSys->M() > 10.0) fillHistograms(51);
       if(tau->Pt() > 33 and antitau->Pt() > 33) {
 	if(sets[42]) fillHistograms(42);
 	if(sets[45] and acoplane < 0.009) fillHistograms(45);
