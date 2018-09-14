@@ -1,6 +1,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"
+#include "TH2.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
 #include "TDirectory.h"
@@ -17,7 +18,11 @@ TDirectory* directories[n];
 Int_t sets[n];
 TTree* treeOut[n];
 TTree* xsecOut;
+TH1* drellTester;
+TH1* setEvents;
+TH1* setEventsN;
 TH2* ptVsMass[n];
+TH1* ptR[n];
 TH1* ptMass[n];
 TH1* massPt[n];
 TH1* massH1[n];
@@ -59,3 +64,4 @@ Double_t acoplane;
 Double_t fracLossPlus;
 Double_t fracLossMinus;
 Double_t ptM;
+Double_t ptRatio;

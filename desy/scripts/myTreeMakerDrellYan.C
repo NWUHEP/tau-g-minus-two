@@ -6,6 +6,18 @@ using namespace std;
 //initialize the trees and the branches for the particle trees
 void bookHistograms() {
   xsecOut = new TTree("xsec", "Cross Section information");
+  setEvents   = new TH1F("setEvents",  "Events in each Set", n, 0. , n);
+  setEventsN  = new TH1F("setEventsN", "Weighted Events in each Set", n, 0. , n);
+  drellTester = new TH1F("drellTester", "drell tester", 100, 0. , 100.);
+  drellTester->GetXaxis()->SetBinLabel(1,"All Events");
+  drellTester->GetXaxis()->SetBinLabel(2,"Eta Cut");
+  drellTester->GetXaxis()->SetBinLabel(3,"LeadPt > 30");
+  drellTester->GetXaxis()->SetBinLabel(4,"TrailPt > 10");
+  drellTester->GetXaxis()->SetBinLabel(5,"M < 80");
+  drellTester->GetXaxis()->SetBinLabel(6,"M > 50");
+  drellTester->GetXaxis()->SetBinLabel(7,"acoplane < .006");
+  drellTester->GetXaxis()->SetBinLabel(8,"nJets < 1");
+
   for(int i = 0; i < n; i++) {
     if(sets[i]) {
 
@@ -15,6 +27,7 @@ void bookHistograms() {
       char* histMname2     = new char[20];
       char* histRname      = new char[20];
       char* histptMname    = new char[20];
+      char* histptRname    = new char[20];
       char* histmPtname    = new char[20];
       char* histptVsMname  = new char[20];
       sprintf(dirname,"book_%i",i);
@@ -23,6 +36,7 @@ void bookHistograms() {
       sprintf(histMname2,"massH2_%i",i);
       sprintf(histRname,"rapidityH_%i",i);
       sprintf(histptVsMname,"ptVsMassH_%i",i);
+      sprintf(histptRname,"ptRatioH_%i",i);
       sprintf(histptMname,"ptMassH_%i",i);
       sprintf(histmPtname,"massPtH_%i",i);
 
@@ -53,9 +67,11 @@ void bookHistograms() {
       treeOut[i]->Branch("fracLossPlus",  &fracLossPlus,       "fracLossPlus/D"   );
       treeOut[i]->Branch("fracLossMinus", &fracLossMinus,      "fracLossMinus/D"  );
       treeOut[i]->Branch("ptMass",        &ptM,                "ptM/D"            );
+      treeOut[i]->Branch("ptRatio",       &ptRatio,            "ptRatio/D"        );
 
       massH1[i]    = new TH1F(histMname1,"Invariant Mass of Lepton System", 200,0,1000);
       massH2[i]    = new TH1F(histMname2,"Invariant Mass of Lepton System", 200,0,200);
+      ptR[i]       = new TH1F(histptRname,"Leading Lepton Pt Over Trailing Lepton Pt",   300,0, 5);
       ptMass[i]    = new TH1F(histptMname,"Invariant Mass of Lepton System Over Pt Sum", 250,0,50);
       massPt[i]    = new TH1F(histmPtname,"Pt Sum Over Invariant Mass of Lepton System", 300,0,30);
       rapidityH[i] = new TH1F(histRname,"Rapidity of Lepton System", 120,-3,3);
@@ -73,12 +89,17 @@ void fillHistograms(Int_t index) {
   ptVsMass[index]->Fill(tau->Pt(), tauSys->M(),1000*xsec/totalEvents*lum*eventWeight);
   ptMass[index]->Fill(1/ptM,1000*xsec/totalEvents*lum*eventWeight);
   massPt[index]->Fill(ptM,xsec/nevts*1000*lum*eventWeight);
-
+  setEvents->Fill(index);
+  setEventsN->Fill(index, eventWeight);
+  ptR[index]->Fill(ptRatio,1000*xsec/totalEvents*lum*eventWeight);
 }
 
 void writeHistograms() {
   topdir->cd();
   xsecOut->Write();
+  drellTester->Write();
+  setEvents->Write();
+  setEventsN->Write();
   for(int i = 0; i < n; i++) {
     if(sets[i]){
       
@@ -90,16 +111,16 @@ void writeHistograms() {
       ptVsMass[i]->Write();
       ptMass[i]->Write();
       massPt[i]->Write();
+      ptR[i]->Write();
     }
   }
 }
 
-Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root", TString foldername = "mumu",
-			   TString treename = "bltTree_zjets_m-50", TString outfilename = "events_full.root",
-			   Double_t luminosity = 15.6)
+Int_t myTreeMakerDrellYan( TString foldername = "mumu", TString treename = "zjets_m-50", TString outfilename = "events_full.root",
+			   TString filename = "/mnt/data/cms/misc/output_z_cr.root", Double_t luminosity = 15.6)
 {
   lum=luminosity;
-  
+  Int_t maxEvts = 1e7;
   //use sets array to determine which trees to build, write, and fill
   //this way adding a new cut or set is trivial
   for(int i = 0; i < n; i++) sets[i] = 0;
@@ -129,7 +150,7 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
   sets[23] = 0; // " + pt of each lepton > 38
   sets[24] = 0; // " + pt of each lepton > 50
 
-  //No invariant Mass Cut
+  //Low Mass Cut Sets
   sets[41] = 1; //Pt > 20 and eta < 2.4
   sets[43] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.009
   sets[44] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.006
@@ -138,22 +159,25 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
   sets[46] = 0; //Pt > 33 and eta < 2.4 and acoplane < 0.006
   sets[47] = 1; //Pt > 20 and eta < 2.4 and acoplane < 0.006 and nJets < 1
   sets[48] = 1; //Pt > 33 and eta < 2.4 and acoplane < 0.006 and nJets < 1
-  sets[50] = 0; //pt>20, eta<2.4, acoplane<0.006, nJets>1, pt lead/pt trail > 0.95
-  sets[51] = 1; //pt>20, eta<2.4, acoplane<0.006, nJets>1, 50 < Mass < 80
-  sets[52] = 1; //pt>20, eta<2.4, acoplane<0.006, nJets>1, 10 < Mass < 50
- 
+  sets[50] = 0; //pt>20, eta<2.4, acoplane<0.006, nJets<1, pt lead/pt trail > 0.95
+  sets[51] = 1; //pt>20, eta<2.4, acoplane<0.006, nJets<1, 50 < Mass < 80
+  sets[52] = 1; //pt>20, eta<2.4, acoplane<0.006, nJets<1, 10 < Mass < 50
+  sets[53] = 1; //leading pt>30, trailing pt > 10, eta<2.4, acoplane<0.006, nJets<1, 50 < Mass < 80
+  sets[54] = 1; //leading pt>30, trailing pt > 10, eta<2.4, acoplane<0.006, nJets<1, 10 < Mass < 50
+  sets[55] = 1; //leading pt>30, trailing pt > 10, eta<2.4, acoplane<0.006, nJets<1,      Mass < 80
+
   //initialize input and output file
   TFile *f1 = TFile::Open(filename);
   if(f1 == NULL) return 1;
   TFile *out = new TFile(outfilename, "RECREATE", "Event information from LPair event.root file");
-
+  
   //Get tree of interest
   TFile *folder = (TFile*) f1->Get(foldername);
   TTree* t1;
   TH1*   totalEventsH;
-  totalEventsH = (TH1*) f1->Get("TotalEvents_zjets_m-50");
+  totalEventsH = (TH1*) f1->Get(Form("TotalEvents_%s",treename.Data()));
   
-  if(folder) t1 = (TTree*) folder->Get(treename);
+  if(folder) t1 = (TTree*) folder->Get(Form("bltTree_%s",treename.Data()));
   else {std::cout << "Folder " << folder << " not found in "
 		  << filename << std::endl; return 2;} //error getting the tree
 
@@ -184,10 +208,12 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
   t1->SetBranchAddress("nJets"            ,&nJets           );
   
   //for qqbar -> z->l+l- + jets mass > 50 GeV = 5776.1 pb  
-  xsec = 5776.1;
+  xsec = (strcmp(treename,"zjets_m-50")==0) ? 5776.1 : 29559.8;
   //xsec = 29559.8;
   //get the number of events, exiting if no events
   nevts = t1->GetEntries();
+  cout << "Events in the Tree: " << nevts << endl;
+  nevts = nevts>maxEvts ? maxEvts : nevts;
   totalEvents = 1;
   if(nevts<1) { std::cout << "no event in the file\n"; return 2;}
   //if the run tree exists, save its information
@@ -195,6 +221,7 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
     std::cout << "no cross section information\n";
   } else {
     totalEvents = totalEventsH->GetBinContent(1);
+    if(nevts == maxEvts) totalEvents = (Int_t) totalEvents*((Double_t) nevts)/t1->GetEntries();
     Double_t effectiveXsec = ((Double_t) nevts)/totalEvents*xsec;
     xsecOut->Branch("xsec",           &xsec,          "xsec/D"         );
     xsecOut->Branch("totalEvents",    &totalEvents,   "totalEvents/I"  );
@@ -208,7 +235,7 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
   //Event Loop
   for(Int_t i = 0; i < nevts; i++) { //
     t1->GetEntry(i);
-    if (i%50000==0) cout << "Event number: " << i << endl;
+    if (i%50000==0) cout << "Event number: " << i << " of " << nevts << endl;
 
     acoplane = 0.0;
 
@@ -223,9 +250,49 @@ Int_t myTreeMakerDrellYan( TString filename = "/mnt/data/cms/sample_ntuple.root"
     fracLossPlus  = 1/13000.0*(tau->Pt()*exp(tau->Eta())+antitau->Pt()*exp(antitau->Eta()));
     fracLossMinus = 1/13000.0*(tau->Pt()*exp(-1*tau->Eta())+antitau->Pt()*exp(-1*antitau->Eta()));
     ptM = (tau->Pt() + antitau->Pt()) / tauSys->M();
-
+    Double_t leadPt  = (tau->Pt() > antitau->Pt()) ? tau->Pt() : antitau->Pt();
+    Double_t trailPt = (tau->Pt() < antitau->Pt()) ? tau->Pt() : antitau->Pt();
+    ptRatio = leadPt / trailPt;
     //kinematic cut filling
     fillHistograms(0);
+
+    drellTester->Fill(0.,1./nevts);
+    if(sets[53] and abs(tau->Eta()) < 2.4 and abs(antitau->Eta()) < 2.4) {
+      drellTester->Fill(1.0,1./nevts);
+      if(leadPt > 30) {
+	drellTester->Fill(2.,1./nevts);
+	if(trailPt > 10) {
+	  drellTester->Fill(3.,1./nevts);
+	  if(tauSys->M() < 80) {
+	    drellTester->Fill(4.0,1./nevts);
+	    if(tauSys->M() > 50) {
+	      drellTester->Fill(5.0,1./nevts);
+	      if(acoplane < 0.006) {
+		drellTester->Fill(6.,1./nevts);
+		if(nJets < 1){ fillHistograms(53); drellTester->Fill(7.,1./nevts);}
+	      }
+	    }
+	  }
+	}
+      }
+    }
+    if(sets[54] and abs(tau->Eta()) < 2.4 and abs(antitau->Eta()) < 2.4) {
+      if(tauSys->M() < 50) {
+	if(tauSys->M() > 10) {
+	  if(acoplane < 0.006) {
+	    if(leadPt > 30) {
+	      if(trailPt > 10) {
+		if(nJets < 1){ fillHistograms(54);}
+	      }
+	    }
+	  }
+	}
+      }
+    }
+
+    if(sets[55] and abs(tau->Eta()) < 2.4 and abs(antitau->Eta()) < 2.4 and nJets < 1 and
+       tauSys->M() < 80 and acoplane < 0.006 and leadPt > 30 and trailPt > 10) fillHistograms(55);
+    
     //no mass requirements
     if(abs(tau->Eta()) < 2.4 and abs(antitau->Eta()) < 2.4 and tau->Pt() > 20 and antitau->Pt() > 20) {
       if(sets[41]) fillHistograms(41);

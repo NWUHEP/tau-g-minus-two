@@ -77,7 +77,8 @@ void stacker(Int_t book, TString hist, Int_t drellBook, TString drellHist, TStri
   char* title = new char[80];
   if(mVsR == 1) sprintf(title,"Invariant Mass");
   else if(mVsR == 0) sprintf(title,"Rapidity");
-  else               sprintf(title,"Invariant Mass over Pt Sum");
+  else if(mVsR == 2) sprintf(title,"Invariant Mass over Pt Sum");
+  else               sprintf(title,"Leading Lepton Pt Over Trailing Lepton Pt");
   
   char* stackName = new char[100];
   sprintf(stackName, "%s of Electron System", title);
@@ -113,7 +114,8 @@ void stacker(Int_t book, TString hist, Int_t drellBook, TString drellHist, TStri
     char* fname = new char[30];
     if(mVsR == 1)       sprintf(title, "Lepton System Invariant Mass (GeV)");
     else if(mVsR == 0)  sprintf(title, "Lepton System Rapidity");
-    else sprintf(title, "Lepton System Mass Over Pt Sum");
+    else if(mVsR == 2)  sprintf(title, "Lepton System Mass Over Pt Sum");
+    else sprintf(title, "Leading Lepton Pt Over Trailing Lepton Pt");
     
     if(_drell) std::sprintf(fname,"%s_Drell_E.png",hist.Data());
     else std::sprintf(fname,"%s_E.png",hist.Data());
@@ -133,14 +135,14 @@ void stacker(Int_t book, TString hist, Int_t drellBook, TString drellHist, TStri
 }
 
 
-void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
+void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1, TString hset = "_MinE20_MinPt10"){
 
-  TFile* file0 = new TFile("Data/events_full_electron_disassociate_MinE20_MinPt10.root");
-  TFile* file1 = new TFile("Data/events_full_electron_elastic_MinE20_MinPt10.root");
-  TFile* file2 = new TFile("Data/events_full_muon_disassociate_MinE20_MinPt10.root");
-  TFile* file3 = new TFile("Data/events_full_muon_elastic_MinE20_MinPt10.root");
-  TFile* file4 = new TFile("Data/events_full_tau_disassociate_MinE20_MinPt10.root");
-  TFile* file5 = new TFile("Data/events_full_tau_elastic_MinE20_MinPt10.root");
+  TFile* file0 = new TFile(Form("Data/events_full_electron_disassociate%s.root",hset.Data()));
+  TFile* file1 = new TFile(Form("Data/events_full_electron_elastic%s.root",hset.Data()));
+  TFile* file2 = new TFile(Form("Data/events_full_muon_disassociate%s.root",hset.Data()));
+  TFile* file3 = new TFile(Form("Data/events_full_muon_elastic%s.root",hset.Data()));
+  TFile* file4 = new TFile(Form("Data/events_full_tau_disassociate%s.root",hset.Data()));
+  TFile* file5 = new TFile(Form("Data/events_full_tau_elastic%s.root",hset.Data()));
   TFile* file6;
   TFile* file7;
   if(drellYan) {
@@ -169,13 +171,21 @@ void hstackMaker(Int_t drellYan = 1, Int_t writeImages = 1){
   stacker(44,"massH1_44", 47, "massH1_47","Events / 50 GeV", 1, 1);
   stacker(44,"massH2_44", 47, "massH2_47","Events / 10 GeV", 1, 1);
   stacker(51,"massH2_51", 51, "massH2_51","Events / 1 GeV" , 1, 0);
+  stacker(53,"massH2_53", 53, "massH2_53","Events / 1 GeV" , 1, 0);
 
   stacker(10,"rapidityH_10", 14, "rapidityH_14","Events / 0.5", 0, 1);
   stacker(9 ,"rapidityH_9" , 13, "rapidityH_13","Events / 0.5", 0, 1);
   stacker(44,"rapidityH_44", 47, "rapidityH_47","Events / 0.5", 0, 1);
   stacker(51,"rapidityH_51", 51, "rapidityH_51","Events / 0.5", 0, 1);
+  stacker(53,"rapidityH_53", 53, "rapidityH_53","Events / 0.5", 0, 1);
 
   setX = 1; xmin = 0; xmax = 5; setLogy = 1;
   stacker(0, "ptMassH_0",     0, "ptMassH_0"   ,"Events / 0.2", 2, 0);
   stacker(51,"ptMassH_51",   51, "ptMassH_51"  ,"Events / 0.2", 2, 0);
+  stacker(53,"ptMassH_53",   53, "ptMassH_53"  ,"Events / 0.2", 2, 0);
+
+  setX = 0; xmin = 0; setLogy = 0; //xmax = 5; 
+  stacker(0, "ptRatioH_0",     0, "ptRatioH_0"   ,"Events / 0.017", 3, 0);
+  stacker(51,"ptRatioH_51",   51, "ptRatioH_51"  ,"Events / 0.017", 3, 0);
+  stacker(53,"ptRatioH_53",   53, "ptRatioH_53"  ,"Events / 0.017", 3, 0);
 }
